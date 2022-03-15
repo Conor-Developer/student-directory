@@ -70,6 +70,7 @@ def print_menu
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
   puts "4. Load the list from students.csv"
+  puts "5. Print the source code"
   puts "9. Exit"
 end
 
@@ -96,6 +97,8 @@ def user_choose_option(selection)
       return_or_exit = true
       check_load_file_exists(filename, return_or_exit)
     end
+  when "5"
+    print_source_code
   when "9"
     exit # this will cause the program to terminate
   else
@@ -152,6 +155,13 @@ def save_students(filename = "students.csv")
     end
   end
   puts "\nThe student list file has been saved.\n\n"
+end
+
+def print_source_code
+  file = File.open(File.basename(__FILE__), "r") 
+  file.readlines.each do |line|
+    puts line
+  end
 end
 
 manually_load_students_on_startup
