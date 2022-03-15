@@ -1,3 +1,5 @@
+require 'csv'
+
 @students = [] # an empty array accessible to all methods
 
 def manually_load_students_on_startup(return_or_exit = false)
@@ -49,11 +51,9 @@ end
 
 def load_students(filename = "students.csv")
   @students = []
-  list = File.open(filename, "r") do |file|
-    file.readlines.each do |line|
-      name, cohort = line.chomp.split(',')
+  CSV.foreach(filename) do |line|
+      name, cohort = line[0], line[1]
       push_hash_to_student_array(name, cohort)
-    end
   end
   puts "\nThe student list file has been loaded.\n\n"
 end
@@ -145,11 +145,10 @@ end
 
 def save_students(filename = "students.csv")
   # open the file for writing and iterate over the array of students
-  csv = File.open(filename, "w") do |file|
+  CSV.open(filename, "w") do |csv|
     @students.each do |student|
       student_data = [student[:name], student[:cohort]]
-      csv_line = student_data.join(",")
-      file.puts csv_line
+      csv << student_data
     end
   end
   puts "\nThe student list file has been saved.\n\n"
@@ -157,5 +156,3 @@ end
 
 manually_load_students_on_startup
 interactive_menu
-
-# file = File.open(filename, "w")
